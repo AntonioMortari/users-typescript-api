@@ -1,4 +1,5 @@
+import { IUser } from '../../database/models/User/protocols'
 
 export interface IUserRepository{
-    getAll: () =>  
+    getAll: () => Promise<IUser[] | Error > 
 }
