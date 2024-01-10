@@ -3,12 +3,14 @@ import { IUserController } from './protocols'
 import { IUserRepository } from '../../repositories/User/protocols'
 import { StatusCodes } from 'http-status-codes'
 import { ApiError } from '../../helpers/api-error'
+import { UserValidation } from './UserValidation'
 
-class UserController implements IUserController {
+class UserController extends UserValidation implements IUserController {
 
     private userRepository: IUserRepository
 
     constructor(userRepository: IUserRepository){
+        super()
         this.userRepository = userRepository
     }
 

@@ -12,7 +12,7 @@ router.get('/', async(req: Request,res:Response) => {
     await userController.list(req,res)
 })
 
-router.post('/', async(req: Request,res: Response) => {
+router.post('/', userController.storeValidator, async(req: Request,res: Response) => {
     await userController.store(req,res)
 })
 
