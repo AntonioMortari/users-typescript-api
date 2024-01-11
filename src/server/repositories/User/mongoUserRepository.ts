@@ -3,6 +3,7 @@ import { IUserRepository } from './protocols'
 import { IUser } from '../../database/models/User/protocols'
 import { ApiError } from '../../helpers/api-error'
 import { StatusCodes } from 'http-status-codes'
+import { hash } from '../../services/encryptPassword'
 
 class MongoUserRepository implements IUserRepository{
 
@@ -38,6 +39,7 @@ class MongoUserRepository implements IUserRepository{
         }
 
         try {
+            data.password = await hash(data.password)
             const result = await User.create(data)
 
             return result._id.toString()
@@ -73,6 +75,9 @@ class MongoUserRepository implements IUserRepository{
         }
 
         try {
+            if(newData.password){
+                newData.password = (await hash(newData.password)).toString()
+            }
             await User.findByIdAndUpdate(id, newData)
         } catch (error) {
             console.log(error)
