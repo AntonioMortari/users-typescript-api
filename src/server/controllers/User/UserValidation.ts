@@ -11,7 +11,5 @@ class UserValidation {
     storeValidator(req: Request,res: Response,next: NextFunction){
         storeValidationMiddleware(req,res,next)
     }
-
 }
-
 export { UserValidation }

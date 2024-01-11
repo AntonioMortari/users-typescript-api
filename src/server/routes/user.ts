@@ -16,4 +16,8 @@ router.post('/', userController.storeValidator, async(req: Request,res: Response
     await userController.store(req,res)
 })
 
+router.delete('/:id', async(req:Request, res: Response) => {
+    await userController.destroy(req,res)
+})
+
 export { router as userRoutes}

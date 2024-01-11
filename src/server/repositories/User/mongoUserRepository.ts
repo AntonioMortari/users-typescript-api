@@ -47,6 +47,39 @@ class MongoUserRepository implements IUserRepository{
         }
     }
 
+    async delete (id: string): Promise<void | ApiError>{
+            
+        const findUser = await this.verifyUserExistsById(id)
+
+        if(!findUser){
+            return new ApiError(`Usuário de id ${id} não existe`, StatusCodes.BAD_REQUEST)
+        }
+        
+        try {
+            
+            await User.findByIdAndDelete(id)
+
+        } catch (error) {
+            console.log(error)
+
+            return new ApiError(`Erro ao deletar usuário de id ${id}`, StatusCodes.INTERNAL_SERVER_ERROR)
+        }
+
+    }
+
+    async verifyUserExistsById(id: string): Promise<boolean>{
+
+        try {
+            const findUser = await User.findById(id)
+
+            if(findUser) return true
+
+            return false
+        } catch (error) {
+            return false
+        }
+    }
+
 }
 
 export { MongoUserRepository}

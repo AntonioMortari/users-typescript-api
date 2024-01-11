@@ -9,18 +9,18 @@ class UserController extends UserValidation implements IUserController {
 
     private userRepository: IUserRepository
 
-    constructor(userRepository: IUserRepository){
+    constructor(userRepository: IUserRepository) {
         super()
         this.userRepository = userRepository
     }
 
-    async list(req: Request,res: Response){
+    async list(req: Request, res: Response) {
 
         const result = await this.userRepository.getAll()
 
-        if(result instanceof ApiError){
+        if (result instanceof ApiError) {
             return res.status(result.statusCode).json({
-                errors:{
+                errors: {
                     default: result.message
                 }
             })
@@ -30,13 +30,13 @@ class UserController extends UserValidation implements IUserController {
 
     }
 
-    async store(req: Request, res: Response){
-        
+    async store(req: Request, res: Response) {
+
         const result = await this.userRepository.create(req.body)
 
-        if(result instanceof ApiError){
+        if (result instanceof ApiError) {
             return res.status(result.statusCode).json({
-                errors:{
+                errors: {
                     default: result.message
                 }
             })
@@ -44,6 +44,21 @@ class UserController extends UserValidation implements IUserController {
 
         return res.status(StatusCodes.CREATED).json(result)
 
+    }
+
+    async destroy(req: Request, res: Response) {
+
+        const result = await this.userRepository.delete(req.params.id)
+
+        if (result instanceof ApiError) {
+            return res.status(result.statusCode).json({
+                errors: {
+                    default: result.message
+                }
+            })
+        }
+
+        return res.status(StatusCodes.NO_CONTENT).send()
     }
 
 }
