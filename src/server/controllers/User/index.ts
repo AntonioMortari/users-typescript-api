@@ -46,6 +46,21 @@ class UserController extends UserValidation implements IUserController {
 
     }
 
+    async edit(req: Request, res: Response){
+        
+        const result = await this.userRepository.update(req.params.id, req.body)
+
+        if(result instanceof ApiError){
+            return res.status(result.statusCode).json({
+                errors:{
+                    default: result.message
+                }
+            })
+        }
+
+        return res.status(StatusCodes.NO_CONTENT).send()
+    }
+
     async destroy(req: Request, res: Response) {
 
         const result = await this.userRepository.delete(req.params.id)
